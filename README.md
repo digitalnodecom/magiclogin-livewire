@@ -1,5 +1,8 @@
 # magiclogin-livewire
 
+TODO
+<a href="https://packagist.org/packages/digitalnode/magiclogin-livewire"><img src="https://img.shields.io/packagist/v/digitalnode/magiclogin-livewire" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/digitalnode/magiclogin-livewire"><img src="https://img.shields.io/packagist/dt/digitalnode/magiclogin-livewire" alt="Total Downloads"></a>
 
 <a href="https://magic.mk">www.magic.mk</a>
 
