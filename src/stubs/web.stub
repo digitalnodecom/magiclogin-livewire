@@ -1,0 +1,10 @@
+use App\Http\Controllers\MagicAuthController;
+
+Route::get('/magic-login', [MagicAuthController::class, "index"])
+    ->middleware("guest")
+    ->name('magic-login');
+
+
+
+
+
