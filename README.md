@@ -1,8 +1,5 @@
 # magiclogin-livewire
 
-TODO
-<a href="https://packagist.org/packages/digitalnode/magiclogin-inertia"><img src="https://img.shields.io/packagist/v/digitalnode/magiclogin-inertia" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/digitalnode/magiclogin-inertia"><img src="https://img.shields.io/packagist/dt/digitalnode/magiclogin-inertia" alt="Total Downloads"></a>
 
 <a href="https://magic.mk">www.magic.mk</a>
 
@@ -20,7 +17,6 @@ integration with your existing Laravel applications.
 You can **install the package** via Composer:
 
 ```bash
-TODO
 composer require digitalnode/magiclogin-livewire
 ```
 
@@ -54,7 +50,7 @@ Feel free to customize any of the files we install or change:
 /database/migrations/..._make_name_and_password_nullable_in_users_table.php
 /Http/Controllers/MagicAuthController.php
 /routes/web.php
-TODO
+/public/magicmk_integration.js
 ```
 
 ## Contributing
