@@ -1,5 +1,5 @@
 function magic_script() {
-    
+
     let serverUrl = 'https://magic.mk';
 
     const magicForm = document.getElementById('magic-form');
@@ -141,5 +141,3 @@ function magic_script() {
     }
 
 }
-
-export default magic_script;

@@ -137,4 +137,3 @@ function magic_script() {
 
 }
 
-export default magic_script;
