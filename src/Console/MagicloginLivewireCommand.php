@@ -4,6 +4,7 @@ namespace Digitalnode\MagicloginLivewire\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class MagicloginLivewireCommand extends Command
 {
@@ -20,6 +21,8 @@ class MagicloginLivewireCommand extends Command
         $this->installWebRoutes();
         $this->installVuePage();
         $this->installIntegrationScript($linkSelected);
+        $this->publishCustomUpdateUserPasswordAction();
+        $this->configureFortifyToUseCustomAction();
         $this->updateEnvFile();
         $this->info('MagicmkAuthLaravelInertia installed successfully.');
         $this->warn('Remember to add the project id (slug) and project api key from your magic mk project to your .env');
@@ -84,4 +87,53 @@ class MagicloginLivewireCommand extends Command
             $this->error('.env file not found.');
         }
     }
+
+    protected function publishCustomUpdateUserPasswordAction(): void
+    {
+        $sourcePath = __DIR__ . '/../stubs/MagicLoginUpdateUserPassword.stub';
+        $destinationPath = app_path('Actions/Fortify/MagicLoginUpdateUserPassword.php');
+
+        if (File::exists($destinationPath)) {
+            $this->warn('Custom MagicLoginUpdateUserPassword action already exists.');
+            return;
+        }
+
+        File::copy($sourcePath, $destinationPath);
+
+        $this->info('Custom MagicLoginUpdateUserPassword action published.');
+    }
+
+    protected function configureFortifyToUseCustomAction(): void
+    {
+        $providerPath = app_path('Providers/FortifyServiceProvider.php');
+
+        if (!File::exists($providerPath)) {
+            $this->error('FortifyServiceProvider.php not found.');
+            return;
+        }
+
+        $fileContents = File::get($providerPath);
+
+        $replacementBinding = 'Fortify::updateUserPasswordsUsing(\\App\\Actions\\Fortify\\MagicLoginUpdateUserPassword::class);';
+
+        $pattern = '/Fortify::updateUserPasswordsUsing\([^)]+\);/';
+
+        if (preg_match($pattern, $fileContents)) {
+            $fileContents = preg_replace($pattern, $replacementBinding, $fileContents, 1, $count);
+
+            if ($count > 0) {
+                $this->info('Updated Fortify::updateUserPasswordsUsing binding in FortifyServiceProvider.php.');
+            } else {
+                $this->error('Failed to update Fortify::updateUserPasswordsUsing binding.');
+                return;
+            }
+        }
+
+        File::put($providerPath, $fileContents);
+
+        $this->info('Fortify configured to use custom UpdateUserPassword action.');
+    }
+
+
+
 }
