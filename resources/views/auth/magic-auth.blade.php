@@ -11,7 +11,7 @@
         magic_script();
 
         window.magicmk = {
-            project: '{{ env('MAGIC_LOGIN_PROJECT_KEY') }}',
+            project_slug: '{{ env('MAGIC_LOGIN_PROJECT_KEY') }}',
             language: '',
             redirect_url: '',
             params: {
