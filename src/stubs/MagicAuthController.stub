@@ -3,13 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -46,11 +43,15 @@ class MagicAuthController extends Controller
             ])->post('https://magic.mk/api/request_validated/', [
                 'request_id' => request()->query("request_id"),
             ]);
-
             if ($response->successful()) {
                 $email = $response->json()["email"];
                 $this->register_or_login_user($email);
-                return redirect(route("dashboard"));
+
+                if (Route::has('dashboard')) {
+                    return redirect()->route('dashboard');
+                } else {
+                    return redirect('/');
+                }
             }
         }
 

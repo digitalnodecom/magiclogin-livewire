@@ -4,7 +4,7 @@
     <p id="validation-message"></p>
 </div>
 
-<script src="{{ asset('magicmk_integration.js') }}"></script>
+<script src="{{ asset('magicmk_integration_ES6_min.js') }}"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

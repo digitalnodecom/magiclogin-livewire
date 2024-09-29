@@ -14,13 +14,11 @@ class MagicloginLivewireCommand extends Command
 
     public function handle(): int
     {
-        $this->warn("Will the authentication be via LINK or CODE?");
-        $linkSelected = $this->confirm('"yes"-LINK ; "no"-CODE', true);
         $this->installMigration();
         $this->installMagicAuthController();
         $this->installWebRoutes();
         $this->installVuePage();
-        $this->installIntegrationScript($linkSelected);
+        $this->installIntegrationScript();
         $this->publishCustomUpdateUserPasswordAction();
         $this->configureFortifyToUseCustomAction();
         $this->updateEnvFile();
@@ -131,15 +129,11 @@ class MagicloginLivewireCommand extends Command
         $this->info('MagicAuth blade template installed.');
     }
 
-    protected function installIntegrationScript($linkSelected): void
+    protected function installIntegrationScript(): void
     {
-        if ($linkSelected) {
-            $sourcePath = __DIR__ . '/../../resources/js/link-integration/magicmk_integration.js';
-        } else {
-            $sourcePath = __DIR__ . '/../../resources/js/code-integration/magicmk_integration.js';
-        }
+        $sourcePath = __DIR__ . '/../../resources/js/magicmk_integration_ES6_min.js';
 
-        $destinationPath = public_path('magicmk_integration.js');
+        $destinationPath = public_path('magicmk_integration_ES6_min.js');
 
         if (!File::exists($sourcePath)) {
             $this->error("Integration script not found at $sourcePath");
@@ -152,7 +146,7 @@ class MagicloginLivewireCommand extends Command
         }
 
         File::copy($sourcePath, $destinationPath);
-        $this->info('magicmk_integration.js script installed.');
+        $this->info('magicmk_integration_ES6_min.js script installed.');
     }
 
     protected function updateEnvFile(): void
@@ -178,6 +172,12 @@ class MagicloginLivewireCommand extends Command
     {
         $sourcePath = __DIR__ . '/../stubs/MagicLoginUpdateUserPassword.stub';
         $destinationPath = app_path('Actions/Fortify/MagicLoginUpdateUserPassword.php');
+        $actionsFolder = app_path('Actions/Fortify');
+
+        if (!File::exists($actionsFolder)) {
+            $this->warn("The /app/Actions/Fortify folder does not exist. Ignoring custom user action installation.");
+            return;
+        }
 
         if (!File::exists($sourcePath)) {
             $this->error("Stub file not found at $sourcePath");
@@ -205,7 +205,7 @@ class MagicloginLivewireCommand extends Command
         $providerPath = app_path('Providers/FortifyServiceProvider.php');
 
         if (!File::exists($providerPath)) {
-            $this->error('FortifyServiceProvider.php not found.');
+            $this->warn('FortifyServiceProvider.php not found. Ignoring custom user action installation.');
             return;
         }
 
