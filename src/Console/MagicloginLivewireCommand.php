@@ -15,6 +15,7 @@ class MagicloginLivewireCommand extends Command
     public function handle(): int
     {
         $this->installMigration();
+        $this->installPhoneMigration();
         $this->installMagicAuthController();
         $this->installWebRoutes();
         $this->installVuePage();
@@ -56,7 +57,7 @@ class MagicloginLivewireCommand extends Command
 
     protected function installMigration(): void
     {
-        $sourcePath = __DIR__ . '/../../database/migrations/make_name_and_password_nullable_in_users_table.php';
+        $sourcePath = __DIR__ . '/../../database/migrations/make_name_password_email_nullable_in_users_table.php';
         $migrationDir = database_path('migrations');
         $newMigrationName = $migrationDir . '/' . date('Y_m_d_His') . '_make_name_and_password_nullable_in_users_table.php';
 
@@ -76,7 +77,32 @@ class MagicloginLivewireCommand extends Command
         }
 
         File::copy($sourcePath, $newMigrationName);
-        $this->info('make_name_and_password_nullable_in_users_table migration installed.');
+        $this->info('make_name_password_email_nullable_in_users_table migration installed.');
+    }
+
+    protected function installPhoneMigration(): void
+    {
+        $sourcePath = __DIR__ . '/../../database/migrations/add_phone_to_users_table.php';
+        $migrationDir = database_path('migrations');
+        $newMigrationName = $migrationDir . '/' . date('Y_m_d_His') . '_add_phone_to_users_table.php';
+
+        if (!File::exists($sourcePath)) {
+            $this->error("Migration source file not found at $sourcePath");
+            return;
+        }
+
+        if (!File::exists($migrationDir)) {
+            $this->error("Migration directory not found at $migrationDir");
+            return;
+        }
+
+        if (File::exists($newMigrationName)) {
+            $this->warn("Migration file $newMigrationName already exists.");
+            return;
+        }
+
+        File::copy($sourcePath, $newMigrationName);
+        $this->info('add_phone_to_users_table migration installed.');
     }
 
     protected function installMagicAuthController(): void
