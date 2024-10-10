@@ -62,7 +62,7 @@ Feel free to customize any of the files we install or change:
 /Actions/Fortify/MagicLoginUpdateUserPassword.php
 /Providers/FortifyServiceProvider.php
 /routes/web.php
-/public/magicmk_integration_ES6_min.js
+/public/magicmk_integration_ES6.js
 ```
 
 ## Contributing

@@ -1,10 +1,11 @@
 <form id="magic-form">
     <input id="magic-input" required>
     <button id="magic-submit"></button>
+    <div id="RecaptchaField"></div>
     <p id="validation-message"></p>
 </form>
 
-<script src="{{ asset('magicmk_integration_ES6_min.js') }}"></script>
+<script src="{{ asset('magicmk_integration_ES6.js') }}"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
