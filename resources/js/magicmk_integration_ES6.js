@@ -284,5 +284,3 @@ async function magic_script() {
         console.error('Error initializing Magic Auth:', error);
     }
 }
-
-export default magic_script;
